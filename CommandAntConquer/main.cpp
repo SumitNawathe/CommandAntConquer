@@ -47,6 +47,19 @@ public:
         m_error_reason = s.str();
     }
 
+    void record_sent_message(std::string message) {
+        m_messages.push_back(">>" + message);
+    }
+
+    void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
+        if (msg->get_opcode() == websocketpp::frame::opcode::text) {
+            m_messages.push_back(msg->get_payload());
+        }
+        else {
+            m_messages.push_back(websocketpp::utility::to_hex(msg->get_payload()));
+        }
+    }
+
     websocketpp::connection_hdl get_hdl() {
         return m_hdl;
     }
@@ -67,6 +80,7 @@ private:
     std::string m_uri;
     std::string m_server;
     std::string m_error_reason;
+    std::vector<std::string> m_messages;
 };
 
 std::ostream& operator<< (std::ostream& out, connection_metadata const& data) {
@@ -74,6 +88,12 @@ std::ostream& operator<< (std::ostream& out, connection_metadata const& data) {
         << "> Status: " << data.m_status << "\n"
         << "> Remote Server: " << (data.m_server.empty() ? "None Specified" : data.m_server) << "\n"
         << "> Error/close reason: " << (data.m_error_reason.empty() ? "N/A" : data.m_error_reason);
+    out << "> Messages Processed: ?" << data.m_messages.size() << ") \n";
+
+    std::vector<std::string>::const_iterator it;
+    for (it = data.m_messages.begin(); it != data.m_messages.end(); ++it) {
+        out << *it << "\n";
+    }
 
     return out;
 }
@@ -136,10 +156,34 @@ public:
             &m_endpoint,
             websocketpp::lib::placeholders::_1
         ));
+        con->set_message_handler(websocketpp::lib::bind(
+            &connection_metadata::on_message,
+            metadata_ptr,
+            websocketpp::lib::placeholders::_1,
+            websocketpp::lib::placeholders::_2
+        ));
 
         m_endpoint.connect(con);
 
         return new_id;
+    }
+
+    void send(int id, std::string message) {
+        websocketpp::lib::error_code ec;
+        
+        con_list::iterator metadata_it = m_connection_list.find(id);
+        if (metadata_it == m_connection_list.end()) {
+            std::cout << "> No connection found with id " << id << std::endl;
+            return;
+        }
+
+        m_endpoint.send(metadata_it->second->get_hdl(), message, websocketpp::frame::opcode::text, ec);
+        if (ec) {
+            std::cout << "> Error sending message: " << ec.message() << std::endl;
+            return;
+        }
+
+        metadata_it->second->record_sent_message(message);
     }
 
     void close(int id, websocketpp::close::status::value code, std::string reason) {
@@ -228,6 +272,18 @@ int main() {
             std::getline(ss, reason);
 
             endpoint.close(id, close_code, reason);
+        }
+        else if (input.substr(0, 4) == "send") {
+            std::stringstream ss(input);
+
+            std::string cmd;
+            int id;
+            std::string message = "";
+
+            ss >> cmd >> id;
+            std::getline(ss, message);
+
+            endpoint.send(id, message);
         }
         else {
             std::cout << "> Unrecognized Command" << std::endl;
