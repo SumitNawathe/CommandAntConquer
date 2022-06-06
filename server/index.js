@@ -6,7 +6,7 @@ wss.on('connection', function connection(ws) {
     console.log("connection");
 
     ws.on('message', function message(data) {
-        onsole.log('received: %s', data);
+        console.log('received: %s', data);
     });
 
     ws.send('something');

@@ -236,6 +236,7 @@ int main() {
             std::cout
                 << "\nCommand List:\n"
                 << "connect <ws uri>\n"
+                << "send <connection id> <message>\n"
                 << "show <connection id>\n"
                 << "close <connection id> [<close code:default=1000>] [<close reason>]\n"
                 << "help: Display this help text\n"
