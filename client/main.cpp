@@ -8,6 +8,11 @@
 #include <iostream>
 #include <string>
 
+#include "Depot.h"
+#include "Player.h"
+#include "GameWindow.h"
+#include "Game.h"
+
 typedef websocketpp::client<websocketpp::config::debug_asio> client;
 
 class connection_metadata {
