@@ -13,8 +13,8 @@ SpriteSheet::SpriteSheet(const char* imageName, float tW, float tH, float sW, fl
     spriteWidth(sW),
     spriteHeight(sH),
     shader(
-        "CommandAntConquer/client/shaders/sprite_shader.vert",
-        "CommandAntConquer/client/shaders/sprite_shader.frag"
+        "client/shaders/sprite_shader.vert",
+        "client/shaders/sprite_shader.frag"
     ),
     VAO(0),
     VBO(0),
