@@ -87,8 +87,8 @@ std::ostream& operator<< (std::ostream& out, connection_metadata const& data) {
     out << "> URI: " << data.m_uri << "\n"
         << "> Status: " << data.m_status << "\n"
         << "> Remote Server: " << (data.m_server.empty() ? "None Specified" : data.m_server) << "\n"
-        << "> Error/close reason: " << (data.m_error_reason.empty() ? "N/A" : data.m_error_reason);
-    out << "> Messages Processed: ?" << data.m_messages.size() << ") \n";
+        << "> Error/close reason: " << (data.m_error_reason.empty() ? "N/A" : data.m_error_reason) << "\n"
+        << "> Messages Processed: (" << data.m_messages.size() << ") \n";
 
     std::vector<std::string>::const_iterator it;
     for (it = data.m_messages.begin(); it != data.m_messages.end(); ++it) {
@@ -236,6 +236,7 @@ int main() {
             std::cout
                 << "\nCommand List:\n"
                 << "connect <ws uri>\n"
+                << "send <connection id> <message>\n"
                 << "show <connection id>\n"
                 << "close <connection id> [<close code:default=1000>] [<close reason>]\n"
                 << "help: Display this help text\n"
