@@ -7,6 +7,8 @@
 #include "Shader.h"
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath) : id(0) {
+	std::cout << "vertexPath: " << vertexPath;
+
 	// read files
 	std::string vertexSource = readShader(vertexPath);
 	std::string fragmentSource = readShader(fragmentPath);
