@@ -26,7 +26,7 @@ GLFWwindow* setup_glfw_window(void) {
 		exit(-1);
 	}
 
-	glViewport(0, 0, 800, 600);
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 		SCREEN_WIDTH = width;

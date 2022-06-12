@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "TextureManager.h"
 #include "Shader.h"
+#include "StaticImage.h"
 
 GameWindow::GameWindow(GLFWwindow* w) :
 	window(w),
@@ -16,9 +17,10 @@ GameWindow::GameWindow(GLFWwindow* w) :
 
 void GameWindow::gameLoop(void) {
 
+	/*
     Shader shader(
-        "C:/Users/Sumit Nawathe/source/repos/CommandAntConquer/CommandAntConquer/CommandAntConquer/client/shaders/basic_shader.vert",
-        "C:/Users/Sumit Nawathe/source/repos/CommandAntConquer/CommandAntConquer/CommandAntConquer/client/shaders/basic_shader.frag"
+        "C:/Users/Sumit Nawathe/source/repos/CommandAntConquer/CommandAntConquer/CommandAntConquer/client/shaders/static_image_shader.vert",
+        "C:/Users/Sumit Nawathe/source/repos/CommandAntConquer/CommandAntConquer/CommandAntConquer/client/shaders/static_image_shader.frag"
     );
 	TextureManager::getInstance().registerTexture("cac_screenshot.png");
 	unsigned int id = TextureManager::getInstance().getTextureID("cac_screenshot.png");
@@ -51,6 +53,9 @@ void GameWindow::gameLoop(void) {
 
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	*/
+
+	StaticImage background("cac_screenshot.png", glm::vec2(-1.0f, -1.0f), glm::vec2(1.0f, 1.0f));
 
 	while (!glfwWindowShouldClose(window)) {
 		processKeyboardInput();
@@ -58,11 +63,14 @@ void GameWindow::gameLoop(void) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		/*
 		glBindTexture(GL_TEXTURE_2D, id);
 		glBindVertexArray(VAO);
 		shader.use();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
+		*/
+		background.draw();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
