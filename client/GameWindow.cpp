@@ -74,6 +74,7 @@ void GameWindow::gameLoop(void) {
         glBindVertexArray(0);
 		*/
 		background.draw();
+		antTest.drawSprite(0.5, 0.5, 1);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
