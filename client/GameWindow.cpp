@@ -7,6 +7,7 @@
 #include "TextureManager.h"
 #include "Shader.h"
 #include "StaticImage.h"
+#include "SpriteSheet.h"
 
 GameWindow::GameWindow(GLFWwindow* w) :
 	window(w),
@@ -56,6 +57,8 @@ void GameWindow::gameLoop(void) {
 	*/
 
 	StaticImage background("cac_screenshot.png", glm::vec2(-1.0f, -1.0f), glm::vec2(1.0f, 1.0f));
+
+	SpriteSheet antTest("ant.png", 16, 8, 8, 8);
 
 	while (!glfwWindowShouldClose(window)) {
 		processKeyboardInput();

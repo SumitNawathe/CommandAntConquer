@@ -9,6 +9,7 @@
 
 class Player {
 public:
+	Player();
 	void update(float dt);
 
 private:
