@@ -6,7 +6,7 @@
 
 #include "globals.h"
 
-void TextureManager::registerTexture(const char* textureName) {
+std::tuple<int, int> TextureManager::registerTexture(const char* textureName) {
 	int width, height, numChannels;
 	std::string loc = std::string(IMAGES_DIR) + textureName;
 	unsigned char* data = stbi_load(loc.c_str(), &width, &height, &numChannels, 0);
@@ -15,8 +15,8 @@ void TextureManager::registerTexture(const char* textureName) {
 		exit(-1);
 	}
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -24,10 +24,12 @@ void TextureManager::registerTexture(const char* textureName) {
 	glGenTextures(1, &textureID);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	stbi_image_free(data);
 
 	if (DEBUG) std::cout << "[TextureManager] Successfully loaded image at "
@@ -36,5 +38,6 @@ void TextureManager::registerTexture(const char* textureName) {
 		<< ", numChannels = " << numChannels
 		<< ", textureID = " << textureID << std::endl;
 	textures[textureName] = textureID;
+	return std::make_tuple(width, height);
 }
 

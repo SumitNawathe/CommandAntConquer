@@ -58,7 +58,7 @@ void GameWindow::gameLoop(void) {
 
 	StaticImage background("cac_screenshot.png", glm::vec2(-1.0f, -1.0f), glm::vec2(1.0f, 1.0f));
 
-	SpriteSheet antTest("ant.png", 16, 8, 8, 8);
+	SpriteSheet antTest("ant.png", 0.1, 0.1, 8, 8);
 
 	while (!glfwWindowShouldClose(window)) {
 		processKeyboardInput();
@@ -74,7 +74,7 @@ void GameWindow::gameLoop(void) {
         glBindVertexArray(0);
 		*/
 		background.draw();
-		antTest.drawSprite(0.5, 0.5, 1);
+		antTest.drawSprite(0.5, 0.5, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

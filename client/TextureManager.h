@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <tuple>
 #include "stb_image.h"
 
 class TextureManager {
@@ -10,7 +11,7 @@ public:
 		static TextureManager instance;
 		return instance;
 	}
-	void registerTexture(const char* textureName);
+	std::tuple<int, int> registerTexture(const char* textureName);
 	unsigned int getTextureID(const char* tex) { return textures[tex]; }
 
 private:

@@ -5,8 +5,8 @@
 
 class SpriteSheet {
 public:
-	SpriteSheet(const char* imageName, int tW, int tH, int sW, int sH);
-	void drawSprite(float posX, float posY);
+	SpriteSheet(const char* imageName, float tW, float tH, float sW, float sH);
+	void drawSprite(float posX, float posY, int frameNum);
 
 private:
 	const char* imageName;
@@ -15,4 +15,6 @@ private:
 	unsigned int VAO, VBO;
 	Shader shader;
 	unsigned int textureID;
+	int fileWidth;
 };
+
