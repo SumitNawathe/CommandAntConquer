@@ -9,8 +9,8 @@ StaticImage::StaticImage(const char* imageName, const glm::vec2 bottomLeft, cons
 	bottomLeft(bottomLeft),
 	topRight(topRight),
 	shader(
-		"../client/shaders/static_image_shader.vert",
-		"../client/shaders/static_image_shader.frag"
+		"C:/Users/ezhu2/source/repos/CommandAntConquer/ComandAntConquer/CommandAntConquer/client/shaders/static_image_shader.vert",
+		"C:/Users/ezhu2/source/repos/CommandAntConquer/ComandAntConquer/CommandAntConquer/client/shaders/static_image_shader.frag"
 	),
 	VAO(0),
 	VBO(0),
