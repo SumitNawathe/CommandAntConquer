@@ -10,5 +10,7 @@ class Nest;
 class Player;
 class Shader;
 class SinglePlayerServer;
+class SpriteSheet;
+class StaticImage;
 class TextureManager;
 

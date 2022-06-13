@@ -4,7 +4,13 @@
 
 #include "TextureManager.h"
 
-StaticImage::StaticImage(const char* imageName, const glm::vec2 bottomLeft, const glm::vec2 topRight) :
+/*
+* StaticImage constructor, to be used for foreground/background
+* @param imageName: relative path to image should be IMAGES_DIR + imageName
+* @param bottomLeft: bottom-left corner of drawn image (in screen-space coords); default (0.0f, 0.0f)
+* @param topRight: top-right corner of drawn image (in screen-space coords); default (1.0f, 1.0f)
+*/
+StaticImage::StaticImage(const char* imageName, const glm::vec2 bottomLeft = glm::vec2(0.0f, 0.0f), const glm::vec2 topRight = glm::vec2(1.0f, 1.0f)) :
 	imageName(imageName),
 	bottomLeft(bottomLeft),
 	topRight(topRight),

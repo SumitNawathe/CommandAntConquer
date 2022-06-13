@@ -38,7 +38,7 @@ private:
 	// check if compilation/linking failed
 	void checkCompileErrors(unsigned int object, std::string type);
 
-	// reads shader files, returns malloc'd string
+	// reads shader files
 	std::string readShader(const char* filepath) const;
 };
 
