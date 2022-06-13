@@ -6,12 +6,11 @@
 // t*: texture, on screen
 // s*: spritesheet, OpenGL texture coordinates
 
-SpriteSheet::SpriteSheet(const char* imageName, float tW, float tH, float sW, float sH) :
+SpriteSheet::SpriteSheet(const char* imageName, float tW, float tH, float sW) :
     imageName(imageName),
     texWidth(tW),
     texHeight(tH),
     spriteWidth(sW),
-    spriteHeight(sH),
     shader(
         "client/shaders/sprite_shader.vert",
         "client/shaders/sprite_shader.frag"
@@ -32,12 +31,12 @@ SpriteSheet::SpriteSheet(const char* imageName, float tW, float tH, float sW, fl
 	glBindVertexArray(VAO);
 	const float vertices[] = {
         -tW/2.0f, -tH/2.0f, 0.0f, 0.0f,    // bottom left
-        tW/2.0f, -tH/2.0f, sW, 0.0f,    // bottom right
-        tW/2.0f, tH/2.0f, sW, sH,    // top right
+        tW/2.0f, -tH/2.0f, sW / (float)fileWidth, 0.0f,    // bottom right
+        tW/2.0f, tH/2.0f, sW / (float)fileWidth, 1.0f,    // top right
 
         -tW/2.0f, -tH/2.0f, 0.0f, 0.0f,    // bottom left
-        tW/2.0f, tH/2.0f, sW, sH,    // top right
-        -tW/2.0f, tH/2.0f, 0.0f, sH    // top left
+        tW/2.0f, tH/2.0f, sW / (float)fileWidth, 1.0f,    // top right
+        -tW/2.0f, tH/2.0f, 0.0f, 1.0f    // top left
 	};
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);

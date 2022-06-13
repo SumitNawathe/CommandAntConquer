@@ -58,7 +58,7 @@ void GameWindow::gameLoop(void) {
 
 	StaticImage background("cac_screenshot.png", glm::vec2(-1.0f, -1.0f), glm::vec2(1.0f, 1.0f));
 
-	SpriteSheet antTest("ant.png", 0.1, 0.1, 8, 8);
+	SpriteSheet antTest("ant.png", 0.1, 0.1, 8);
 
 	while (!glfwWindowShouldClose(window)) {
 		processKeyboardInput();

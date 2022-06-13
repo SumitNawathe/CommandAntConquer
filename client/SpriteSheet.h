@@ -5,7 +5,7 @@
 
 class SpriteSheet {
 public:
-	SpriteSheet(const char* imageName, float tW, float tH, float sW, float sH);
+	SpriteSheet(const char* imageName, float tW, float tH, float sW);
 	void drawSprite(float posX, float posY, int frameNum);
 
 private:
