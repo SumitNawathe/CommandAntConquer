@@ -6,6 +6,11 @@
 
 #include "globals.h"
 
+/*
+* Loads and caches the desired texture with OpenGL, to be retrieved/used later
+* @param textureName: relative path to texture file should be IMAGES_DIR + textureName
+* @returns tuple (width, height) of loaded texture file
+*/
 std::tuple<int, int> TextureManager::registerTexture(const char* textureName) {
 	int width, height, numChannels;
 	std::string loc = std::string(IMAGES_DIR) + textureName;

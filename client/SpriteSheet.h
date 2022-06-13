@@ -10,7 +10,7 @@ public:
 
 private:
 	const char* imageName;
-	int spriteWidth, spriteHeight;
+	int spriteWidth;
 	int texWidth, texHeight;
 	unsigned int VAO, VBO;
 	Shader shader;
