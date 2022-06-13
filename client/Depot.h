@@ -6,7 +6,8 @@
 
 class Depot {
 public:
-
+	Depot(glm::vec2 pos);
+	glm::vec2 getPos();
 private:
 	glm::vec2 pos;
 	int supply;

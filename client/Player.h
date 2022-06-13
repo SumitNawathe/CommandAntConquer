@@ -9,8 +9,9 @@
 
 class Player {
 public:
-	Player();
+	Player(glm::vec2 pos);
 	void update(float dt);
+	Nest* getNest();
 
 private:
 	glm::vec2 queenPos;

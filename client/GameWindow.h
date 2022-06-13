@@ -15,5 +15,8 @@ private:
 
 	void gameLoop(void);
 	void processKeyboardInput(void);
+
+	//debug
+	bool mouseButtonLeftDown;
 };
 

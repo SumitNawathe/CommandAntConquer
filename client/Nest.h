@@ -5,7 +5,8 @@
 
 class Nest {
 public:
-
+	Nest(glm::vec2 pos, Player& player);
+	glm::vec2 getPos();
 private:
 	glm::vec2 pos;
 	Player& player;
