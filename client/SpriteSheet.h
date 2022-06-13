@@ -7,6 +7,7 @@ class SpriteSheet {
 public:
 	SpriteSheet(const char* imageName, float tW, float tH, float sW);
 	void drawSprite(float posX, float posY, int frameNum);
+	void drawSprite(std::tuple<glm::vec2, int>);
 
 private:
 	const char* imageName;

@@ -24,8 +24,14 @@ class Ant {
 public:
 	Ant(Player& player, glm::vec2 pos);
 	void update(float dt);
+	void updateAcc(glm::vec2 acc);
+	void updateSpeed();
+	std::tuple<glm::vec2, int> drawSettings();
 
 private:
+	const float MAX_SPEED;
+	const float MIN_SPEED_THRESHOLD;
+
 	bool alive;
 	AntState state;
 	AntCarrying carrying;
@@ -36,7 +42,10 @@ private:
 	Player& player;
 	glm::vec2 pos;
 	glm::vec2 vel;
+	glm::vec2 acc;
 	float speed;
+
+	int step;
 };
 
 
