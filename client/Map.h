@@ -12,18 +12,18 @@ class Map {
 public:
 	typedef typename std::vector<glm::vec2> Boundary;
 
+	Map(const char* directory);
+
 private:
 	std::string name;
 	int numPlayers;
-	StaticImage foreground;
-	StaticImage background;
+	StaticImage* foreground;
+	StaticImage* background;
 	std::vector<Depot> depots;
 	std::vector<Nest> nests;
 	Boundary mapEdge;
 	std::vector<Boundary> rocks;
 	int boundaryApproxGridWidth, boundaryApproxGridHeight;
 	int** boundaryApproxGrid; // boundaryApproxGrid[width][height], heap-allocated
-
-	void loadMap(const char* directory);
 };
 
