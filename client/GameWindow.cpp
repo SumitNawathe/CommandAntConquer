@@ -16,7 +16,7 @@
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 GameWindow::GameWindow(GLFWwindow* w) :
-	FPS_LIMIT(1.0 / 10.0),
+	FPS_LIMIT(1.0 / 60.0),
 	window(w),
 	server(nullptr)
 {
@@ -41,26 +41,28 @@ void GameWindow::gameLoop(void) {
 	double currTime = 0;
 	double frameTime = 0;
 
+	glm::vec2 pos(0, 0);
+
 	while (!glfwWindowShouldClose(window)) {
 		processKeyboardInput();
 
 		currTime = glfwGetTime();
-		deltaTime += currTime - lastTime;
+		deltaTime = currTime - lastTime;
+
+			antTest.update(deltaTime);
 
 		if (currTime - frameTime >= FPS_LIMIT) {
-			antTest.update(deltaTime);
+			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			background.draw();
+			antSprite.drawSprite(antTest.drawSettings());
+
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+
 			frameTime = currTime;
 		}
-
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		background.draw();
-		antSprite.drawSprite(antTest.drawSettings());
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-
 		lastTime = currTime;
 	}
 

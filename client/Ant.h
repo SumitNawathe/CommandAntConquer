@@ -32,7 +32,6 @@ public:
 private:
 	const float MAX_SPEED;
 	const float MIN_SPEED_THRESHOLD;
-	const float MAX_ACCELERATION;
 
 	bool alive;
 	AntState state;
