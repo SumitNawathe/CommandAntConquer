@@ -4,8 +4,9 @@
 #include <iostream>
 
 Ant::Ant(Player& player, glm::vec2 pos) :
-	MAX_SPEED(0.01),
-	MIN_SPEED_THRESHOLD(0.000001),
+	MAX_SPEED(0.001),
+	MIN_SPEED_THRESHOLD(0.001),
+	MAX_ACCELERATION(0.0001),
 	alive(1),
 	state(AntState::Standing),
 	carrying(AntCarrying::Empty),
@@ -27,7 +28,7 @@ glm::vec2 Ant::getVel() {
 
 void Ant::update(float dt) {
 	if (state == AntState::GettingFood) {
-		if (glm::distance(pos, depot->getPos()) < 0.0001f) {
+		if (glm::distance(pos, depot->getPos()) < 0.01f) {
 			carrying = AntCarrying::Food;
 			state = AntState::DeliveringFood;
 			updateAcc(glm::normalize(player.getNest()->getPos() - pos) / 10.0f);
@@ -37,7 +38,7 @@ void Ant::update(float dt) {
 		}
 	}
 	else if (state == AntState::DeliveringFood) {
-		if (glm::distance(pos, player.getNest()->getPos()) < 0.0001f) {
+		if (glm::distance(pos, player.getNest()->getPos()) < 0.01f) {
 			carrying = AntCarrying::Empty;
 			state = AntState::GettingFood;
 			updateAcc(glm::normalize(depot->getPos() - pos) / 10.0f);
@@ -49,16 +50,24 @@ void Ant::update(float dt) {
 	}
 	vel = vel + dt * acc;
 	updateSpeed();
-	if (speed > MAX_SPEED) vel = glm::normalize(vel) * MAX_SPEED;
+	std::cout << "speed: " << speed << " vel: " << vel.x << " " << vel.y << std::endl;
 	pos = pos + dt * vel;
 }
 
 void Ant::updateAcc(glm::vec2 acc) {
+	if (glm::length(acc) > MAX_ACCELERATION) {
+		this->acc = glm::normalize(acc) * MAX_ACCELERATION;
+		return;
+	}
 	this->acc = acc;
 }
 
 void Ant::updateSpeed() {
 	speed = glm::length(vel);
+	if (speed > MAX_SPEED) {
+		vel = glm::normalize(vel) * MAX_SPEED;
+		speed = MAX_SPEED;
+	}
 }
 
 std::tuple<glm::vec2, int> Ant::drawSettings() {

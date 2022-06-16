@@ -16,7 +16,7 @@
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 GameWindow::GameWindow(GLFWwindow* w) :
-	FPS_LIMIT(1.0 / 60.0),
+	FPS_LIMIT(1.0 / 10.0),
 	window(w),
 	server(nullptr)
 {
@@ -37,24 +37,19 @@ void GameWindow::gameLoop(void) {
 
 	glfwSetTime(0);
 	double lastTime = glfwGetTime();
-	double timer = lastTime;
 	double deltaTime = 0;
 	double currTime = 0;
-	int frames = 0;
-	int updates = 0;
+	double frameTime = 0;
 
 	while (!glfwWindowShouldClose(window)) {
 		processKeyboardInput();
 
 		currTime = glfwGetTime();
-		deltaTime += (currTime - lastTime) / FPS_LIMIT;
-		lastTime = currTime;
+		deltaTime += currTime - lastTime;
 
-		while (deltaTime >= 1.0) {
-			antTest.update((currTime = glfwGetTime() - currTime));
-			std::cout << antTest.getVel().x << " " << antTest.getVel().y << std::endl;
-			updates++;
-			deltaTime--;
+		if (currTime - frameTime >= FPS_LIMIT) {
+			antTest.update(deltaTime);
+			frameTime = currTime;
 		}
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -63,15 +58,10 @@ void GameWindow::gameLoop(void) {
 		background.draw();
 		antSprite.drawSprite(antTest.drawSettings());
 
-		frames++;
-
-		if (glfwGetTime() - timer > 1.0) {
-			timer++;
-			std::cout << "FPS: " << frames << " Updates: " << updates << std::endl;
-		}
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		lastTime = currTime;
 	}
 
 }
