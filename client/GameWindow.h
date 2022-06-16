@@ -10,6 +10,9 @@ public:
 	GameWindow(GLFWwindow* w);
 
 private:
+
+	const double FPS_LIMIT;
+
 	GLFWwindow* window;
 	AbstractServer* server;
 

@@ -23,6 +23,7 @@ enum class AntCarrying {
 class Ant {
 public:
 	Ant(Player& player, glm::vec2 pos);
+	glm::vec2 getVel();
 	void update(float dt);
 	void updateAcc(glm::vec2 acc);
 	void updateSpeed();

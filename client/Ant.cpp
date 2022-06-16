@@ -4,7 +4,7 @@
 #include <iostream>
 
 Ant::Ant(Player& player, glm::vec2 pos) :
-	MAX_SPEED(0.0001),
+	MAX_SPEED(0.01),
 	MIN_SPEED_THRESHOLD(0.000001),
 	alive(1),
 	state(AntState::Standing),
@@ -21,25 +21,29 @@ Ant::Ant(Player& player, glm::vec2 pos) :
 	state = AntState::GettingFood; //<- for testing only
 }
 
+glm::vec2 Ant::getVel() {
+	return vel;
+}
+
 void Ant::update(float dt) {
 	if (state == AntState::GettingFood) {
 		if (glm::distance(pos, depot->getPos()) < 0.0001f) {
 			carrying = AntCarrying::Food;
 			state = AntState::DeliveringFood;
-			updateAcc(glm::normalize(player.getNest()->getPos() - pos) / 1000.0f);
+			updateAcc(glm::normalize(player.getNest()->getPos() - pos) / 10.0f);
 		}
 		else {
-			updateAcc(glm::normalize(depot->getPos() - pos) / 1000.0f);
+			updateAcc(glm::normalize(depot->getPos() - pos) / 10.0f);
 		}
 	}
 	else if (state == AntState::DeliveringFood) {
 		if (glm::distance(pos, player.getNest()->getPos()) < 0.0001f) {
 			carrying = AntCarrying::Empty;
 			state = AntState::GettingFood;
-			updateAcc(glm::normalize(depot->getPos() - pos) / 1000.0f);
+			updateAcc(glm::normalize(depot->getPos() - pos) / 10.0f);
 		}
 		else {
-			updateAcc(glm::normalize(player.getNest()->getPos() - pos) / 1000.0f);
+			updateAcc(glm::normalize(player.getNest()->getPos() - pos) / 10.0f);
 
 		}
 	}
