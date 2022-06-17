@@ -52,10 +52,10 @@ void Ant::update(float dt) {
 	//vel += glm::vec2(-0.0005f, -0.0005f);
 	updateSpeed();
 	updateWalk(dt);
-	std::cout << "acc: " << acc.x << " " << acc.y << " speed: " << speed << " vel: " << vel.x << " " << vel.y << std::endl;
+	//std::cout << "acc: " << acc.x << " " << acc.y << " speed: " << speed << " vel: " << vel.x << " " << vel.y << std::endl;
 	//glm::vec2 oldpos = pos;
 	pos = pos + dt * vel;
-	pos += glm::vec2(-0.0001f, -0.0001f);
+	//pos += glm::vec2(-0.0001f, -0.0001f);
 	//std::cout << "displacement: " << glm::distance(oldpos, pos) << std::endl;
 	//std::cout << "pos: " << pos.x << " " << pos.y << std::endl;
 }

@@ -32,7 +32,12 @@ void GameWindow::gameLoop(void) {
 	SpriteSheet antSprite("ant.png", 0.1, 0.1, 8);
 
 	Player* player = new Player(glm::vec2(0.39f, 0.45f));
-	Ant antTest(*player, glm::vec2(0.39f, 0.45f));
+	std::vector<Ant> ants;
+	//Ant antTest(*player, glm::vec2(0.39f, 0.45f));
+	for (int i = 0; i < 1000; i++) {
+		ants.push_back(Ant(*(new Player(glm::vec2(((double)rand() / (double)RAND_MAX) * 2 - 1, ((double)rand() / (double)RAND_MAX) * 2 - 1))),
+			glm::vec2(((double)rand() / (double)RAND_MAX) * 2 - 1, ((double)rand() / (double)RAND_MAX) * 2 - 1)));
+	}
 
 
 	glfwSetTime(0);
@@ -50,14 +55,20 @@ void GameWindow::gameLoop(void) {
 		currTime = glfwGetTime();
 		deltaTime = currTime - lastTime;
 
-		antTest.update(deltaTime);
+		//antTest.update(deltaTime);
+
+		for (auto& ant : ants) {
+			ant.update(deltaTime);
+		}
 
 		if (currTime - frameTime >= FPS_LIMIT) {
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			background.draw();
-			antSprite.drawSprite(antTest.drawSettings());
+			for (auto& ant : ants) {
+				antSprite.drawSprite(ant.drawSettings());
+			}
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
