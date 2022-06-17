@@ -1,4 +1,4 @@
-#include "Map.h"
+#include "GameMap.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -32,5 +32,5 @@ int* GameMap::NearestNonrestricted(double x, double y) {
 }
 
 GameMap::TILE_TYPE GameMap::getTileType(double x, double y) {
-    return Map::fullyRestricted;
+    return GameMap::fullyRestricted;
 }

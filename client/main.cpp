@@ -5,7 +5,7 @@
 #include "forward_declarations.h"
 #include "globals.h"
 #include "GameWindow.h"
-#include "Map.h"
+#include "../GameMap.h"
 
 int main(int argc, char* argv[]) {
 	GameMap f;
