@@ -1,12 +1,12 @@
-#include <string.h>
+#include <string>
 
-class Map
+class GameMap
 {
 public:
-
+	
 	// initialize internal information of map from file
 	// specified by the input string
-	void SerializeFromString(char* path); 
+	void SerializeFromString(const char const* path); 
 	
 	// returns whether the point at (x,y) is within a 
 	// restricted region
@@ -43,5 +43,9 @@ private:
 
 	TILE_TYPE getTileType(double x, double y); // returns what type of tile is the input coordinate
 											   // within
+
+
+	// number of tiles from one end of the board to the other
+	const int /* keep this number EVEN */ numTiles = 128;
 };
 
