@@ -28,7 +28,7 @@ glm::vec2 Ant::getVel() {
 
 void Ant::update(float dt) {
 	if (state == AntState::GettingFood) {
-		if (glm::distance(pos, depot->getPos()) < 0.05f) {
+		if (glm::distance(pos, depot->getPos()) < 0.08f) {
 			carrying = AntCarrying::Food;
 			state = AntState::DeliveringFood;
 			updateAcc(player.getNest()->getPos() - pos);
@@ -38,7 +38,7 @@ void Ant::update(float dt) {
 		}
 	}
 	else if (state == AntState::DeliveringFood) {
-		if (glm::distance(pos, player.getNest()->getPos()) < 0.05f) {
+		if (glm::distance(pos, player.getNest()->getPos()) < 0.08f) {
 			carrying = AntCarrying::Empty;
 			state = AntState::GettingFood;
 			updateAcc(depot->getPos() - pos);
@@ -82,13 +82,14 @@ void Ant::updateWalk(double dt) {
 	}
 }
 
-std::tuple<glm::vec2, int> Ant::drawSettings() {
+std::tuple<glm::vec2, int, int> Ant::drawSettings() {
+	int direction = acc.x < 0;
 	if (carrying == AntCarrying::Empty) {
 		//if (speed < MIN_SPEED_THRESHOLD) return std::make_tuple(pos, 0);
-		return std::make_tuple(pos, step);
+		return std::make_tuple(pos, step, direction);
 	}
 	else if (carrying == AntCarrying::Food || carrying == AntCarrying::Egg) {
 		//if (speed < MIN_SPEED_THRESHOLD) return std::make_tuple(pos, 0);
-		return std::make_tuple(pos, step + 2);
+		return std::make_tuple(pos, step + 2, direction);
 	}
 }

@@ -34,9 +34,9 @@ void GameWindow::gameLoop(void) {
 	Player* player = new Player(glm::vec2(0.39f, 0.45f));
 	std::vector<Ant> ants;
 	//Ant antTest(*player, glm::vec2(0.39f, 0.45f));
-	for (int i = 0; i < 10; i++) {
-		ants.push_back(Ant(*(new Player(glm::vec2(((double)rand() / (double)RAND_MAX) * 2 - 1, ((double)rand() / (double)RAND_MAX) * 2 - 1))),
-			glm::vec2(((double)rand() / (double)RAND_MAX) * 2 - 1, ((double)rand() / (double)RAND_MAX) * 2 - 1)));
+	for (int i = 0; i < 10000; i++) {
+		ants.push_back(Ant(*(new Player(glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9))),
+			glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9)));
 	}
 
 

@@ -28,7 +28,7 @@ public:
 	void updateAcc(glm::vec2 acc);
 	void updateSpeed();
 	void updateWalk(double dt);
-	std::tuple<glm::vec2, int> drawSettings();
+	std::tuple<glm::vec2, int, int> drawSettings();
 
 private:
 	const float MAX_SPEED;

@@ -77,3 +77,16 @@ void SpriteSheet::drawSprite(std::tuple<glm::vec2, int> settings) {
     glBindVertexArray(0);
 
 }
+
+void SpriteSheet::drawSprite(std::tuple<glm::vec2, int, int> settings) {
+    glBindVertexArray(VAO);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    shader.use();
+    shader.setVector2f("actualPosition", (get<0>(settings)).x, (get<0>(settings)).y);
+    shader.setInteger("frameNum", get<1>(settings));
+    shader.setFloat("frameHorizSize", (float)spriteWidth / (float)fileWidth);
+    shader.setInteger("direction", get<2>(settings));
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
+
+}
