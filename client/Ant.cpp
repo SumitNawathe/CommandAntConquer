@@ -20,6 +20,11 @@ Ant::Ant(Player& player, glm::vec2 pos) :
 	
 	depot = new Depot(glm::vec2(0.745f, -0.1f));
 	state = AntState::GettingFood; //<- for testing only
+	std::cout << player.getNest()->getPos().x << " " << player.getNest()->getPos().y << std::endl;
+}
+
+glm::vec2 Ant::getPos() {
+	return pos;
 }
 
 glm::vec2 Ant::getVel() {
@@ -80,6 +85,10 @@ void Ant::updateWalk(double dt) {
 		walk = 0;
 		step = !step;
 	}
+}
+
+void Ant::addVel(glm::vec2 vel) {
+	this->vel += vel;
 }
 
 std::tuple<glm::vec2, int, int> Ant::drawSettings() {

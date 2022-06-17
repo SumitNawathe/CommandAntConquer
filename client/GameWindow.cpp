@@ -29,14 +29,14 @@ void GameWindow::gameLoop(void) {
 
 	StaticImage background("cac_screenshot.png", glm::vec2(-1.0f, -1.0f), glm::vec2(1.0f, 1.0f));
 
-	SpriteSheet antSprite("ant.png", 0.1, 0.1, 8);
+	SpriteSheet antSprite("ant.png", 0.075, 0.075, 8);
 
 	Player* player = new Player(glm::vec2(0.39f, 0.45f));
 	std::vector<Ant> ants;
 	//Ant antTest(*player, glm::vec2(0.39f, 0.45f));
-	for (int i = 0; i < 10000; i++) {
-		ants.push_back(Ant(*(new Player(glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9))),
-			glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9)));
+	for (int i = 0; i < 500; i++) {
+		Player* tempPlayer = new Player(glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9));
+		ants.push_back(Ant(*tempPlayer, tempPlayer->getNest()->getPos()));
 	}
 
 
@@ -57,8 +57,16 @@ void GameWindow::gameLoop(void) {
 
 		//antTest.update(deltaTime);
 
-		for (auto& ant : ants) {
-			ant.update(deltaTime);
+		for (int i = 0; i < ants.size(); i++) {
+			for (int j = i+1; j < ants.size(); j++) {
+				Ant& aAnt = ants.at(i);
+				Ant& bAnt = ants.at(j);
+				if (glm::distance(aAnt.getPos(), bAnt.getPos()) < 0.08f) {
+					aAnt.addVel((aAnt.getPos() - bAnt.getPos()) / 100.0f);
+					bAnt.addVel((bAnt.getPos() - aAnt.getPos()) / 100.0f);
+				}
+			}
+			ants.at(i).update(deltaTime);
 		}
 
 		if (currTime - frameTime >= FPS_LIMIT) {

@@ -23,11 +23,13 @@ enum class AntCarrying {
 class Ant {
 public:
 	Ant(Player& player, glm::vec2 pos);
+	glm::vec2 getPos();
 	glm::vec2 getVel();
 	void update(float dt);
 	void updateAcc(glm::vec2 acc);
 	void updateSpeed();
 	void updateWalk(double dt);
+	void addVel(glm::vec2 vel);
 	std::tuple<glm::vec2, int, int> drawSettings();
 
 private:
