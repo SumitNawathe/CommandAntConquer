@@ -14,10 +14,11 @@ Ant::Ant(Player& player, glm::vec2 pos) :
 	vel(0),
 	acc(0),
 	speed(0),
+	walk(0),
 	step(0)
 {
+	
 	depot = new Depot(glm::vec2(0.745f, -0.1f));
-
 	state = AntState::GettingFood; //<- for testing only
 }
 
@@ -47,11 +48,14 @@ void Ant::update(float dt) {
 
 		}
 	}
-	vel = vel + dt * acc;
+	vel += dt * acc;
+	vel += glm::vec2(-0.0005f, -0.0005f);
 	updateSpeed();
-	std::cout << "speed: " << speed << " vel: " << vel.x << " " << vel.y << std::endl;
-	glm::vec2 oldpos = pos;
-	std::cout << "displacement: " << glm::distance(oldpos, pos = pos + dt * vel) << std::endl;
+	updateWalk(dt);
+	//std::cout << "speed: " << speed << " vel: " << vel.x << " " << vel.y << std::endl;
+	//glm::vec2 oldpos = pos;
+	pos = pos + dt * vel;
+	//std::cout << "displacement: " << glm::distance(oldpos, pos) << std::endl;
 	//std::cout << "pos: " << pos.x << " " << pos.y << std::endl;
 }
 
@@ -67,13 +71,23 @@ void Ant::updateSpeed() {
 	}
 }
 
+void Ant::updateWalk(double dt) {
+	walk += dt;
+	float threshold = 1.0f / (50.0f * speed);
+	std::cout << "walk: " << walk << " inverse speed: " << threshold << std::endl;
+	if (walk > threshold) {
+		walk = 0;
+		step = !step;
+	}
+}
+
 std::tuple<glm::vec2, int> Ant::drawSettings() {
 	if (carrying == AntCarrying::Empty) {
-		if (speed < MIN_SPEED_THRESHOLD) return std::make_tuple(pos, 0);
-		return std::make_tuple(pos, (step = !step));
+		//if (speed < MIN_SPEED_THRESHOLD) return std::make_tuple(pos, 0);
+		return std::make_tuple(pos, step);
 	}
 	else if (carrying == AntCarrying::Food || carrying == AntCarrying::Egg) {
-		if (speed < MIN_SPEED_THRESHOLD) return std::make_tuple(pos, 0);
-		return std::make_tuple(pos, (step = !step) + 2);
+		//if (speed < MIN_SPEED_THRESHOLD) return std::make_tuple(pos, 0);
+		return std::make_tuple(pos, step);
 	}
 }

@@ -27,6 +27,7 @@ public:
 	void update(float dt);
 	void updateAcc(glm::vec2 acc);
 	void updateSpeed();
+	void updateWalk(double dt);
 	std::tuple<glm::vec2, int> drawSettings();
 
 private:
@@ -46,6 +47,7 @@ private:
 	glm::vec2 acc;
 	float speed;
 
+	double walk;
 	int step;
 };
 
