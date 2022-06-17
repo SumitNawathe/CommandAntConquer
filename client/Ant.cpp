@@ -28,33 +28,34 @@ glm::vec2 Ant::getVel() {
 
 void Ant::update(float dt) {
 	if (state == AntState::GettingFood) {
-		if (glm::distance(pos, depot->getPos()) < 0.01f) {
+		if (glm::distance(pos, depot->getPos()) < 0.05f) {
 			carrying = AntCarrying::Food;
 			state = AntState::DeliveringFood;
-			updateAcc(glm::normalize(player.getNest()->getPos() - pos));
+			updateAcc(player.getNest()->getPos() - pos);
 		}
 		else {
-			updateAcc(glm::normalize(depot->getPos() - pos));
+			updateAcc(depot->getPos() - pos);
 		}
 	}
 	else if (state == AntState::DeliveringFood) {
-		if (glm::distance(pos, player.getNest()->getPos()) < 0.01f) {
+		if (glm::distance(pos, player.getNest()->getPos()) < 0.05f) {
 			carrying = AntCarrying::Empty;
 			state = AntState::GettingFood;
-			updateAcc(glm::normalize(depot->getPos() - pos));
+			updateAcc(depot->getPos() - pos);
 		}
 		else {
-			updateAcc(glm::normalize(player.getNest()->getPos() - pos));
+			updateAcc(player.getNest()->getPos() - pos);
 
 		}
 	}
 	vel += dt * acc;
-	vel += glm::vec2(-0.0005f, -0.0005f);
+	//vel += glm::vec2(-0.0005f, -0.0005f);
 	updateSpeed();
 	updateWalk(dt);
-	//std::cout << "speed: " << speed << " vel: " << vel.x << " " << vel.y << std::endl;
+	std::cout << "acc: " << acc.x << " " << acc.y << " speed: " << speed << " vel: " << vel.x << " " << vel.y << std::endl;
 	//glm::vec2 oldpos = pos;
 	pos = pos + dt * vel;
+	pos += glm::vec2(-0.0001f, -0.0001f);
 	//std::cout << "displacement: " << glm::distance(oldpos, pos) << std::endl;
 	//std::cout << "pos: " << pos.x << " " << pos.y << std::endl;
 }
@@ -74,7 +75,7 @@ void Ant::updateSpeed() {
 void Ant::updateWalk(double dt) {
 	walk += dt;
 	float threshold = 1.0f / (50.0f * speed);
-	std::cout << "walk: " << walk << " inverse speed: " << threshold << std::endl;
+	//std::cout << "walk: " << walk << " inverse speed: " << threshold << std::endl;
 	if (walk > threshold) {
 		walk = 0;
 		step = !step;
@@ -88,6 +89,6 @@ std::tuple<glm::vec2, int> Ant::drawSettings() {
 	}
 	else if (carrying == AntCarrying::Food || carrying == AntCarrying::Egg) {
 		//if (speed < MIN_SPEED_THRESHOLD) return std::make_tuple(pos, 0);
-		return std::make_tuple(pos, step);
+		return std::make_tuple(pos, step + 2);
 	}
 }

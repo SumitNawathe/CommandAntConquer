@@ -40,6 +40,7 @@ void GameWindow::gameLoop(void) {
 	double deltaTime = 0;
 	double currTime = 0;
 	double frameTime = 0;
+	double renderTime = 0;
 
 	glm::vec2 pos(0, 0);
 
@@ -49,7 +50,7 @@ void GameWindow::gameLoop(void) {
 		currTime = glfwGetTime();
 		deltaTime = currTime - lastTime;
 
-			antTest.update(deltaTime);
+		antTest.update(deltaTime);
 
 		if (currTime - frameTime >= FPS_LIMIT) {
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
