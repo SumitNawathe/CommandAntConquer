@@ -26,7 +26,7 @@ public:
 	glm::vec2 getPos();
 	glm::vec2 getVel();
 	void update(float dt);
-	void updateAcc(glm::vec2 acc);
+	void setAcc(glm::vec2 acc);
 	void updateSpeed();
 	void updateWalk(double dt);
 	void addVel(glm::vec2 vel);
@@ -51,6 +51,9 @@ private:
 
 	double walk;
 	int step;
+
+	void updateAccTowardsTarget(glm::vec2 target, bool antiOrbit = true);
+	void runPhysics(float dt);
 };
 
 

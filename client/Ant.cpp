@@ -2,6 +2,8 @@
 #include <glad/glad.h>
 #include "TextureManager.h"
 #include <iostream>
+#include <glm/gtx/projection.hpp>
+#include "utils.h"
 
 Ant::Ant(Player& player, glm::vec2 pos) :
 	MAX_SPEED(0.25),
@@ -31,41 +33,51 @@ glm::vec2 Ant::getVel() {
 	return vel;
 }
 
+void Ant::updateAccTowardsTarget(glm::vec2 target, bool antiOrbit) {
+	glm::vec2 acc = target - pos;
+
+	if (antiOrbit) {
+		glm::vec3 normal = glm::cross(vec2to3(acc), glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::vec3 proj = glm::proj(vec2to3(vel), normal);
+		
+		if (glm::length(proj) > 10.0f * MIN_SPEED_THRESHOLD)
+			acc -= vec3to2(proj);
+	}
+	setAcc(acc);
+}
+
 void Ant::update(float dt) {
 	if (state == AntState::GettingFood) {
 		if (glm::distance(pos, depot->getPos()) < 0.08f) {
 			carrying = AntCarrying::Food;
 			state = AntState::DeliveringFood;
-			updateAcc(player.getNest()->getPos() - pos);
+			setAcc(player.getNest()->getPos() - pos);
 		}
 		else {
-			updateAcc(depot->getPos() - pos);
+			updateAccTowardsTarget(depot->getPos());
 		}
 	}
 	else if (state == AntState::DeliveringFood) {
 		if (glm::distance(pos, player.getNest()->getPos()) < 0.08f) {
 			carrying = AntCarrying::Empty;
 			state = AntState::GettingFood;
-			updateAcc(depot->getPos() - pos);
+			setAcc(depot->getPos() - pos);
 		}
 		else {
-			updateAcc(player.getNest()->getPos() - pos);
-
+			updateAccTowardsTarget(player.getNest()->getPos());
 		}
 	}
-	vel += dt * acc;
-	//vel += glm::vec2(-0.0005f, -0.0005f);
-	updateSpeed();
-	updateWalk(dt);
-	//std::cout << "acc: " << acc.x << " " << acc.y << " speed: " << speed << " vel: " << vel.x << " " << vel.y << std::endl;
-	//glm::vec2 oldpos = pos;
-	pos = pos + dt * vel;
-	//pos += glm::vec2(-0.0001f, -0.0001f);
-	//std::cout << "displacement: " << glm::distance(oldpos, pos) << std::endl;
-	//std::cout << "pos: " << pos.x << " " << pos.y << std::endl;
+	runPhysics(dt);
 }
 
-void Ant::updateAcc(glm::vec2 acc) {
+void Ant::runPhysics(float dt) {
+	vel += dt * acc;
+	updateSpeed();
+	updateWalk(dt);
+	pos += dt * vel;
+}
+
+void Ant::setAcc(glm::vec2 acc) {
 	this->acc = acc;
 }
 
