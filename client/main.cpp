@@ -39,6 +39,9 @@ GLFWwindow* setup_glfw_window(void) {
 
 int main(int argc, char* argv[]) {
 	if (DEBUG) std::cout << "[Main] Starting application" << std::endl;
+
+	srand(time(NULL));
+
 	GLFWwindow* window = setup_glfw_window();
 	GameWindow gameWindow(window);
 

@@ -32,13 +32,11 @@ void GameWindow::gameLoop(void) {
 	SpriteSheet antSprite("ant.png", 0.075, 0.075, 8);
 
 	Player* player = new Player(glm::vec2(0.39f, 0.45f));
-	std::vector<Ant> ants;
-	//Ant antTest(*player, glm::vec2(0.39f, 0.45f));
-	constexpr int NUM_ANTS = 2;
+	constexpr int NUM_ANTS = 70;
 	for (int i = 0; i < NUM_ANTS; i++) {
-		//Player* tempPlayer = new Player(glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9));
-		//ants.push_back(Ant(*tempPlayer, tempPlayer->getNest()->getPos()));
-		ants.push_back(Ant(*player, glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9)));
+		Ant a(*player, glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9));
+		player->ants.push_back(a);
+		player->sentryPosts.add(a.getID());
 	}
 
 
@@ -58,16 +56,16 @@ void GameWindow::gameLoop(void) {
 		deltaTime = currTime - lastTime;
 
 		//antTest.update(deltaTime);
-		for (int i = 0; i < ants.size(); i++) {
-			for (int j = i+1; j < ants.size(); j++) {
-				Ant& aAnt = ants.at(i);
-				Ant& bAnt = ants.at(j);
-				if (glm::distance(aAnt.getPos(), bAnt.getPos()) < 0.08f) {
-					aAnt.addVel((aAnt.getPos() - bAnt.getPos()) / 100.0f);
-					bAnt.addVel((bAnt.getPos() - aAnt.getPos()) / 100.0f);
-				}
-			}
-			ants.at(i).update(deltaTime);
+		for (int i = 0; i < player->ants.size(); i++) {
+			//for (int j = i+1; j < ants.size(); j++) {
+				//Ant& aAnt = ants.at(i);
+				//Ant& bAnt = ants.at(j);
+				//if (glm::distance(aAnt.getPos(), bAnt.getPos()) < 0.08f) {
+					//aAnt.addVel((aAnt.getPos() - bAnt.getPos()) / 100.0f);
+					//bAnt.addVel((bAnt.getPos() - aAnt.getPos()) / 100.0f);
+				//}
+			//}
+			player->ants.at(i).update(deltaTime);
 		}
 
 		if (currTime - frameTime >= FPS_LIMIT) {
@@ -76,9 +74,11 @@ void GameWindow::gameLoop(void) {
 
 			background.draw();
 			//antSprite.drawSprite(antTest.drawSettings());
-			for (auto& ant : ants) {
+			for (auto& ant : player->ants) {
 				antSprite.drawSprite(ant.drawSettings());
 			}
+
+			antSprite.drawSprite(player->drawSettings());
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
