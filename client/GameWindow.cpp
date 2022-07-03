@@ -31,12 +31,12 @@ void GameWindow::gameLoop(void) {
 
 	SpriteSheet antSprite("ant.png", 0.075, 0.075, 8);
 
-	Player* player = new Player(glm::vec2(0.39f, 0.45f));
+	Player player(glm::vec2(0.39f, 0.45f));
 	constexpr int NUM_ANTS = 70;
 	for (int i = 0; i < NUM_ANTS; i++) {
-		Ant a(*player, glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9));
-		player->ants.push_back(a);
-		player->sentryPosts.add(a.getID());
+		Ant a(player, glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9));
+		player.ants.push_back(a);
+		player.sentryPosts.add(a.getID());
 	}
 
 
@@ -51,12 +51,14 @@ void GameWindow::gameLoop(void) {
 
 	while (!glfwWindowShouldClose(window)) {
 		processKeyboardInput();
+		setPlayerInputs(player);
 
 		currTime = glfwGetTime();
 		deltaTime = currTime - lastTime;
 
+		player.update(deltaTime);
 		//antTest.update(deltaTime);
-		for (int i = 0; i < player->ants.size(); i++) {
+		for (int i = 0; i < player.ants.size(); i++) {
 			//for (int j = i+1; j < ants.size(); j++) {
 				//Ant& aAnt = ants.at(i);
 				//Ant& bAnt = ants.at(j);
@@ -65,7 +67,7 @@ void GameWindow::gameLoop(void) {
 					//bAnt.addVel((bAnt.getPos() - aAnt.getPos()) / 100.0f);
 				//}
 			//}
-			player->ants.at(i).update(deltaTime);
+			player.ants.at(i).update(deltaTime);
 		}
 
 		if (currTime - frameTime >= FPS_LIMIT) {
@@ -74,11 +76,11 @@ void GameWindow::gameLoop(void) {
 
 			background.draw();
 			//antSprite.drawSprite(antTest.drawSettings());
-			for (auto& ant : player->ants) {
+			for (auto& ant : player.ants) {
 				antSprite.drawSprite(ant.drawSettings());
 			}
 
-			antSprite.drawSprite(player->drawSettings());
+			antSprite.drawSprite(player.drawSettings());
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
@@ -88,6 +90,34 @@ void GameWindow::gameLoop(void) {
 		lastTime = currTime;
 	}
 
+}
+
+void GameWindow::setPlayerInputs(Player& player) {
+	bool up = false, down = false, left = false, right = false;
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) up = true;
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) down = true;
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) left = true;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) right = true;
+	
+	if (up && !down) player.inputDirection.setUp();
+	else if (down && !up) player.inputDirection.setDown();
+	else player.inputDirection.setNeutVert();
+
+	if (left && !right) player.inputDirection.setLeft();
+	else if (right && !left) player.inputDirection.setRight();
+	else player.inputDirection.setNeutHoriz();
+
+	if constexpr (DEBUG) {
+		static bool prevUp, prevDown, prevLeft, prevRight;
+		if (up != prevUp) std::cout << "[GameWindow::setPlayerInputs] UP "
+			<< ( (prevUp = up) ? "pressed" : "released" ) << '\n';
+		if (down != prevDown) std::cout << "[GameWindow::setPlayerInputs] DOWN "
+			<< ( (prevDown = down) ? "pressed" : "released" ) << '\n';
+		if (left != prevLeft) std::cout << "[GameWindow::setPlayerInputs] LEFT "
+			<< ( (prevLeft = left) ? "pressed" : "released" ) << '\n';
+		if (right != prevRight) std::cout << "[GameWindow::setPlayerInputs] RIGHT "
+			<< ( (prevRight = right) ? "pressed" : "released" ) << '\n';
+	}
 }
 
 void GameWindow::processKeyboardInput(void) {

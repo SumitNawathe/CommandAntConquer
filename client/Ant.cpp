@@ -67,9 +67,9 @@ void Ant::update(float dt) {
 			}
 			break;
 		case AntState::Sentry:
-			glm::vec2 target = player.sentryPosts.getRelPos(id);
+			glm::vec2 target = player.sentryPosts.getRelPos(id) + player.getPos();
 			updateAccTowardsTarget(target);
-			if (glm::distance(target, pos) < 0.01f) {
+			if (glm::distance(target, pos) < 0.001f) {
 				pos = target;
 				vel = glm::vec2(0.0f, 0.0f);
 				acc = glm::vec2(0.0f, 0.0f);

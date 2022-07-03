@@ -21,5 +21,7 @@ private:
 
 	//debug
 	bool mouseButtonLeftDown;
+
+	void setPlayerInputs(Player& player);
 };
 

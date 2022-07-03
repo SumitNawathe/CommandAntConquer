@@ -25,3 +25,4 @@ inline long long int genRandLL(void) {
 	std::uniform_int_distribution<long long int> distribution;
 	return distribution(gen);
 }
+

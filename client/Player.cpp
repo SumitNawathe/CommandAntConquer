@@ -98,3 +98,12 @@ std::tuple<glm::vec2, int, int> Player::drawSettings() const {
 	return std::make_tuple(pos, 0, 0);
 }
 
+void Player::update(float dt) {
+	if (!inputDirection) return;
+	glm::vec2 d(
+		inputDirection.isRight() ? 1.0f : inputDirection.isLeft() ? -1.0f : 0.0f,
+		inputDirection.isUp() ? 1.0f : inputDirection.isDown() ? -1.0f : 0.0f
+	);
+	pos += glm::normalize(d) * dt * 0.20f;
+}
+
