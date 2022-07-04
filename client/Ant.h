@@ -8,6 +8,7 @@
 /* possible states representing actions an Ant could be performing */
 enum class AntState {
 	Standing,
+	Recall,
 	Sentry,
 	Attacking,
 	GettingFood,
@@ -64,13 +65,14 @@ private:
 	glm::vec2 vel;
 	glm::vec2 acc;
 	float speed;
+	bool stationary_sentry;
 
 	/* properties for animation */
 
 	double walk;
 	int step;
 
-	void updateAccTowardsTarget(glm::vec2 target, bool antiOrbit = true);
+	void updateAccTowardsTarget(glm::vec2 target, bool dontMissTarget = false);
 	void runPhysics(float dt);
 	const ID_T genID(void) const;
 };

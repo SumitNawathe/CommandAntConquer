@@ -32,7 +32,7 @@ void GameWindow::gameLoop(void) {
 	SpriteSheet antSprite("ant.png", 0.075, 0.075, 8);
 
 	Player player(glm::vec2(0.39f, 0.45f));
-	constexpr int NUM_ANTS = 70;
+	constexpr int NUM_ANTS = 4;
 	for (int i = 0; i < NUM_ANTS; i++) {
 		Ant a(player, glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9));
 		player.ants.push_back(a);
@@ -59,9 +59,9 @@ void GameWindow::gameLoop(void) {
 		player.update(deltaTime);
 		//antTest.update(deltaTime);
 		for (int i = 0; i < player.ants.size(); i++) {
-			//for (int j = i+1; j < ants.size(); j++) {
-				//Ant& aAnt = ants.at(i);
-				//Ant& bAnt = ants.at(j);
+			//for (int j = i+1; j < player.ants.size(); j++) {
+				//Ant& aAnt = player.ants.at(i);
+				//Ant& bAnt = player.ants.at(j);
 				//if (glm::distance(aAnt.getPos(), bAnt.getPos()) < 0.08f) {
 					//aAnt.addVel((aAnt.getPos() - bAnt.getPos()) / 100.0f);
 					//bAnt.addVel((bAnt.getPos() - aAnt.getPos()) / 100.0f);

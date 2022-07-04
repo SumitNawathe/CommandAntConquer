@@ -6,6 +6,7 @@
 #include <glm/gtx/projection.hpp>
 #include <chrono>
 
+#include "globals.h"
 #include "utils.h"
 #include "Player.h"
 
@@ -28,19 +29,25 @@ Ant::Ant(Player& player, glm::vec2 pos) :
 
 	// for testing only
 	//state = AntState::GettingFood;
-	state = AntState::Sentry;
+	state = AntState::Recall;
 }
 
-void Ant::updateAccTowardsTarget(glm::vec2 target, bool antiOrbit) {
+void Ant::updateAccTowardsTarget(glm::vec2 target, bool dontMissTarget) {
 	glm::vec2 acc = target - pos;
 
-	if (antiOrbit) {
-		glm::vec3 normal = glm::cross(vec2to3(acc), glm::vec3(0.0f, 0.0f, 1.0f));
+	if (dontMissTarget && glm::dot(vel, target - pos) < 0) {
+		if constexpr (DEBUG) std::cout << "[Ant::updateAccTowardsTarget] dontMissTarget activated\n";
+		glm::vec3 normal = glm::cross(vec2to3(target - pos), glm::vec3(0.0f, 0.0f, 1.0f));
 		glm::vec3 proj = glm::proj(vec2to3(vel), normal);
-		
-		if (glm::length(proj) > 10.0f * ANT_MIN_SPEED_THRESHOLD)
-			acc -= vec3to2(proj);
+		vel -= vec3to2(proj);
 	}
+
+	// anti-orbit
+	glm::vec3 normal = glm::cross(vec2to3(target - pos), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::vec3 proj = glm::proj(vec2to3(vel), normal);
+	if (glm::length(proj) > 10.0f * ANT_MIN_SPEED_THRESHOLD)
+		acc -= vec3to2(proj);
+
 	setAcc(acc);
 }
 
@@ -66,15 +73,35 @@ void Ant::update(float dt) {
 				updateAccTowardsTarget(player.getNest()->getPos());
 			}
 			break;
-		case AntState::Sentry:
-			glm::vec2 target = player.sentryPosts.getRelPos(id) + player.getPos();
-			updateAccTowardsTarget(target);
-			if (glm::distance(target, pos) < 0.001f) {
-				pos = target;
+		case AntState::Recall:
+			glm::vec2 recall_target = player.sentryPosts.getRelPos(id) + player.getPos();
+			updateAccTowardsTarget(recall_target, true);
+			if (glm::distance(recall_target, pos) < 0.001f) {
+				state = AntState::Sentry;
+				pos = recall_target;
 				vel = glm::vec2(0.0f, 0.0f);
 				acc = glm::vec2(0.0f, 0.0f);
 			}
 			break;
+		case AntState::Sentry:
+			glm::vec2 sentry_target = player.sentryPosts.getRelPos(id) + player.getPos();
+			if (stationary_sentry) {
+				if (glm::distance(sentry_target, pos) > 0.015f) {
+					updateAccTowardsTarget(sentry_target, true);
+					stationary_sentry = false;
+				}
+			}
+			else {
+				if (glm::distance(sentry_target, pos) < 0.01f) {
+					pos = sentry_target;
+					vel = glm::vec2(0.0f, 0.0f);
+					acc = glm::vec2(0.0f, 0.0f);
+					//moving = false;
+					stationary_sentry = true;
+				}
+				else
+					updateAccTowardsTarget(sentry_target, true);
+			}
 		default:
 			break;
 	}
