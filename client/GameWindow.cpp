@@ -58,17 +58,17 @@ void GameWindow::gameLoop(void) {
 		deltaTime = currTime - lastTime;
 
 		//antTest.update(deltaTime);
-		for (int i = 0; i < ants.size(); i++) {
-			for (int j = i+1; j < ants.size(); j++) {
-				Ant& aAnt = ants.at(i);
-				Ant& bAnt = ants.at(j);
-				if (glm::distance(aAnt.getPos(), bAnt.getPos()) < 0.08f) {
-					aAnt.addVel((aAnt.getPos() - bAnt.getPos()) / 100.0f);
-					bAnt.addVel((bAnt.getPos() - aAnt.getPos()) / 100.0f);
-				}
-			}
-			ants.at(i).update(deltaTime);
-		}
+		//for (int i = 0; i < ants.size(); i++) {
+		//	for (int j = i+1; j < ants.size(); j++) {
+		//		Ant& aAnt = ants.at(i);
+		//		Ant& bAnt = ants.at(j);
+		//		if (glm::distance(aAnt.getPos(), bAnt.getPos()) < 0.08f) {
+		//			aAnt.addVel((aAnt.getPos() - bAnt.getPos()) / 100.0f);
+		//			bAnt.addVel((bAnt.getPos() - aAnt.getPos()) / 100.0f);
+		//		}
+		//	}
+		//	ants.at(i).update(deltaTime);
+		//}
 
 		if (currTime - frameTime >= FPS_LIMIT) {
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
