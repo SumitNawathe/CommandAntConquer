@@ -6,7 +6,7 @@
 #include "utils.h"
 
 Ant::Ant(Player& player, glm::vec2 pos) :
-	MAX_SPEED(0.25),
+	MAX_SPEED(0.18),
 	MIN_SPEED_THRESHOLD(0.001),
 	alive(1),
 	state(AntState::Standing),
@@ -22,7 +22,7 @@ Ant::Ant(Player& player, glm::vec2 pos) :
 	
 	depot = new Depot(glm::vec2(0.745f, -0.1f));
 	state = AntState::GettingFood; //<- for testing only
-	std::cout << player.getNest()->getPos().x << " " << player.getNest()->getPos().y << std::endl;
+	//std::cout << player.getNest()->getPos().x << " " << player.getNest()->getPos().y << std::endl;
 }
 
 glm::vec2 Ant::getPos() {
