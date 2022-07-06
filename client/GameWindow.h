@@ -20,6 +20,7 @@ private:
 	void processKeyboardInput(void);
 
 	//debug
+	double approxdT;
 	bool mouseButtonLeftDown;
 };
 
