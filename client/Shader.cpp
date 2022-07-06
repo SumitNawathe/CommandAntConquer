@@ -7,7 +7,7 @@
 #include "Shader.h"
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath) : id(0) {
-	std::cout << "vertexPath: " << vertexPath;
+	if (VERBOSE) std::cout << "vertexPath: " << vertexPath;
 
 	// read files
 	std::string vertexSource = readShader(vertexPath);
@@ -32,7 +32,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
 	// compile shader
 	compile(vertexSourcePtr, fragmentSourcePtr, geometrySourcePtr);
 
-	if (DEBUG) std::cout << "[Shader] successfully compiled shaders; "
+	if (DEBUG && VERBOSE) std::cout << "[Shader] successfully compiled shaders; "
 		<< "vertex = " << (vertexPath ? vertexPath : "nullptr")
 		<< ", fragment = " << (fragmentPath ? fragmentPath : "nullptr")
 		<< ", geometry = " << (geometryPath ? geometryPath : "nullptr") << std::endl;

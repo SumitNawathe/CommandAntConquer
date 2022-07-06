@@ -40,7 +40,7 @@ std::tuple<int, int> TextureManager::registerTexture(const char* textureName) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	stbi_image_free(data);
 
-	if (DEBUG) std::cout << "[TextureManager] Successfully loaded image at "
+	if (DEBUG && VERBOSE) std::cout << "[TextureManager] Successfully loaded image at "
 		<< loc << "; width = " << width
 		<< ", height = " << height
 		<< ", numChannels = " << numChannels

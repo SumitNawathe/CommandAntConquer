@@ -8,6 +8,7 @@
 class GameWindow {
 public:
 	GameWindow(GLFWwindow* w);
+	GameWindow(GLFWwindow* w, int timeSeconds, int numAnts);
 
 private:
 
@@ -20,6 +21,8 @@ private:
 	void processKeyboardInput(void);
 
 	//debug
+	int timeSeconds;
+	int numAnts;
 	double approxdT;
 	bool mouseButtonLeftDown;
 };

@@ -31,7 +31,7 @@ SpriteSheet::SpriteSheet(const char* imageName, float tW, float tH, float sW) :
     fileWidth = fw;
     textureID = TextureManager::getInstance().getTextureID(imageName);
     shader.setInteger("texture1", 0, true);
-    if (DEBUG) std::cout << "[SpriteSheet] fileWidth = " << fileWidth << std::endl;
+    if (DEBUG && VERBOSE) std::cout << "[SpriteSheet] fileWidth = " << fileWidth << std::endl;
 
     // set up VAO/VBO
 	glGenVertexArrays(1, &VAO);

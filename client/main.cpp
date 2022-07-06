@@ -6,6 +6,9 @@
 #include "globals.h"
 #include "GameWindow.h"
 
+#include <vector>
+#include <string>
+
 GLFWwindow* setup_glfw_window(void) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -38,11 +41,26 @@ GLFWwindow* setup_glfw_window(void) {
 }
 
 int main(int argc, char* argv[]) {
-	if (DEBUG) std::cout << "[Main] Starting application" << std::endl;
-	GLFWwindow* window = setup_glfw_window();
-	GameWindow gameWindow(window);
 
-	if (DEBUG) std::cout << "[Main] Terminating program" << std::endl;
-	glfwTerminate();
+	std::vector<std::tuple<std::string, int, int>> tests;
+	tests.push_back(std::make_tuple("1 Ant", 10, 1));
+	tests.push_back(std::make_tuple("10 Ants", 10, 10));
+	tests.push_back(std::make_tuple("100 Ants", 10, 100));
+	tests.push_back(std::make_tuple("1000 Ants", 10, 1000));
+	GLFWwindow* window;
+	GameWindow* gameWindow;
+
+	for (auto const& test : tests) {
+		if (DEBUG) std::cout << "[Main] Starting application " << get<0>(test) << std::endl;
+		window = setup_glfw_window();
+		gameWindow = new GameWindow(window, 10, get<2>(test));
+
+		if (DEBUG) std::cout << "[Main] Terminating program " << get<0>(test) << std::endl << std::endl;
+		delete gameWindow;
+		glfwTerminate();
+	}
+
 	return 0;
 }
+
+

@@ -24,6 +24,16 @@ GameWindow::GameWindow(GLFWwindow* w) :
 	gameLoop();
 }
 
+GameWindow::GameWindow(GLFWwindow* w, int timeSeconds, int numAnts) :
+	FPS_LIMIT(1.0 / 60.0),
+	window(w),
+	server(nullptr),
+	timeSeconds(timeSeconds),
+	numAnts(numAnts)
+{
+	gameLoop();
+}
+
 void GameWindow::gameLoop(void) {
 
 	if (DEBUG) glfwSetMouseButtonCallback(window, mouse_button_callback);
@@ -35,7 +45,7 @@ void GameWindow::gameLoop(void) {
 	Player* player = new Player(glm::vec2(0.39f, 0.45f));
 	std::vector<Ant> ants;
 	//Ant antTest(*player, glm::vec2(0.39f, 0.45f));
-	constexpr int NUM_ANTS = 2000;
+	const int NUM_ANTS = numAnts;
 	for (int i = 0; i < NUM_ANTS; i++) {
 		//Player* tempPlayer = new Player(glm::vec2(((double)rand() / (double)RAND_MAX) * 1.8 - 0.9, ((double)rand() / (double)RAND_MAX) * 1.8 - 0.9));
 		//ants.push_back(Ant(*tempPlayer, tempPlayer->getNest()->getPos()));
@@ -49,7 +59,7 @@ void GameWindow::gameLoop(void) {
 	double currTime = 0;
 	double frameTime = 0;
 	double renderTime = 0;
-
+	
 	while (!glfwWindowShouldClose(window)) {
 		processKeyboardInput();
 
@@ -86,6 +96,10 @@ void GameWindow::gameLoop(void) {
 			frameTime = currTime;
 		}
 		lastTime = currTime;
+		if (currTime > timeSeconds) {
+			glfwSetWindowShouldClose(window, true);
+			std::cout << "Approximate deltaTime: " << approxdT << std::endl;
+		}
 	}
 
 }
